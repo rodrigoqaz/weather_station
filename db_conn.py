@@ -19,7 +19,3 @@ class Database:
         cursor.execute(sql, val)
         self.db.commit()
         return print(cursor.rowcount, "Registros iseridos")
-
-
-database = Database()
-database.insert_dht22('2021-01-23', '16:20:00', 25.88383, 25.98)
