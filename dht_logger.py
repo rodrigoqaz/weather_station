@@ -1,23 +1,25 @@
-import os
 import time
 import Adafruit_DHT
+from db_conn import Database
 
 DHT_SENSOR = Adafruit_DHT.DHT22
 DHT_PIN = 4
 
-try:
-    f = open('/home/pi/dht_logger.csv', 'a+')
-    if os.stat('/home/pi/dht_logger.csv').st_size == 0:
-            f.write('Date,Time,Temperature,Humidity\r\n')
-except:
-    pass
+database = Database()
+
+print(time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S'))
 
 while True:
     humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN)
 
     if humidity is not None and temperature is not None:
-        f.write('{0},{1},{2:0.1f}*C,{3:0.1f}%\r\n'.format(time.strftime('%m/%d/%y'), time.strftime('%H:%M'), temperature, humidity))
+        database.insert_dht22(
+            data=time.strftime('%Y-%m-%d'),
+            hora=time.strftime('%H:%M:%S'),
+            umidade=humidity,
+            temperatura=temperature
+        )
     else:
-        print("Failed to retrieve data from humidity sensor")
+        print("falha ao coletar dados do sensor")
 
-    time.sleep(30)
+    time.sleep(60)
