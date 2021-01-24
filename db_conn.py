@@ -19,3 +19,11 @@ class Database:
         cursor.execute(sql, val)
         self.db.commit()
         return print(cursor.rowcount, "Registros iseridos")
+
+    def insert_pluviometer(self, data, hora, precipitacao):
+        cursor = self.db.cursor()
+        sql = "INSERT INTO weather_station.pluviometer (data, hora, precipitacao) VALUES (%s, %s, %s)"
+        val = (data, hora, precipitacao)
+        cursor.execute(sql, val)
+        self.db.commit()
+        return print(cursor.rowcount, "Registros iseridos")
